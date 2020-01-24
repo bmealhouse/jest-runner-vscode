@@ -1,7 +1,19 @@
 import createJestConfig from './create-jest-config'
 
+const formatSnapshot = (config: any): any => ({
+  ...config,
+  globals: config.globals.replace(
+    '/home/travis/build/bmealhouse',
+    '/Users/brent/dev',
+  ),
+  setupFilesAfterEnv: config.setupFilesAfterEnv.map((filepath: string) =>
+    filepath.replace('/home/travis/build/bmealhouse', '/Users/brent/dev'),
+  ),
+})
+
 test('creates default jest config', () => {
-  expect(createJestConfig('./rootDir', './pkgDir')).toMatchInlineSnapshot(`
+  expect(formatSnapshot(createJestConfig('./rootDir', './pkgDir')))
+    .toMatchInlineSnapshot(`
     Object {
       "colors": true,
       "globals": "{\\"ts-jest\\":{\\"tsConfig\\":\\"/Users/brent/dev/jest-runner-vscode/rootDir/tsconfig.json\\"}}",
@@ -25,7 +37,8 @@ test('creates jest config with custom setup file', () => {
   process.env.JEST_RUNNER_VSCODE_SETUP =
     '/path/to/custom/setup/jest-runner-vscode-setup.js'
 
-  expect(createJestConfig('./rootDir', './pkgDir')).toMatchInlineSnapshot(`
+  expect(formatSnapshot(createJestConfig('./rootDir', './pkgDir')))
+    .toMatchInlineSnapshot(`
     Object {
       "colors": true,
       "globals": "{\\"ts-jest\\":{\\"tsConfig\\":\\"/Users/brent/dev/jest-runner-vscode/rootDir/tsconfig.json\\"}}",
@@ -50,7 +63,8 @@ test('creates jest config with custom setup file', () => {
 test('creates jest config with custom test regex', () => {
   process.env.JEST_RUNNER_VSCODE_TEST_REGEX = '/path/to/single/test/file.ts'
 
-  expect(createJestConfig('./rootDir', './pkgDir')).toMatchInlineSnapshot(`
+  expect(formatSnapshot(createJestConfig('./rootDir', './pkgDir')))
+    .toMatchInlineSnapshot(`
     Object {
       "colors": true,
       "globals": "{\\"ts-jest\\":{\\"tsConfig\\":\\"/Users/brent/dev/jest-runner-vscode/rootDir/tsconfig.json\\"}}",
