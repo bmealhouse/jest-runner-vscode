@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2020-01-23
+
+### Fixed
+
+- Remove moduleFileExtensions config to use Jest defaults
+
 ## [0.1.0] - 2020-01-11
 
 - Initial release

@@ -5,10 +5,6 @@ test('creates default jest config', () => {
     Object {
       "colors": true,
       "globals": "{\\"ts-jest\\":{\\"tsConfig\\":\\"/Users/brent/dev/jest-runner-vscode/rootDir/tsconfig.json\\"}}",
-      "moduleFileExtensions": Array [
-        "ts",
-        "tsx",
-      ],
       "rootDir": "./rootDir",
       "roots": Array [
         "<rootDir>/src",
@@ -33,10 +29,6 @@ test('creates jest config with custom setup file', () => {
     Object {
       "colors": true,
       "globals": "{\\"ts-jest\\":{\\"tsConfig\\":\\"/Users/brent/dev/jest-runner-vscode/rootDir/tsconfig.json\\"}}",
-      "moduleFileExtensions": Array [
-        "ts",
-        "tsx",
-      ],
       "rootDir": "./rootDir",
       "roots": Array [
         "<rootDir>/src",
@@ -62,10 +54,6 @@ test('creates jest config with custom test regex', () => {
     Object {
       "colors": true,
       "globals": "{\\"ts-jest\\":{\\"tsConfig\\":\\"/Users/brent/dev/jest-runner-vscode/rootDir/tsconfig.json\\"}}",
-      "moduleFileExtensions": Array [
-        "ts",
-        "tsx",
-      ],
       "rootDir": "./rootDir",
       "roots": Array [
         "<rootDir>/src",
