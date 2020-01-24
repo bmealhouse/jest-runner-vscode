@@ -1,6 +1,6 @@
 {
   "name": "jest-runner-vscode",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Run VS Code tests using Jest Testing Framework",
   "repository": "https://github.com/bmealhouse/jest-runner-vscode",
   "author": "Brent Mealhouse <bmealhouse@gmail.com>",
