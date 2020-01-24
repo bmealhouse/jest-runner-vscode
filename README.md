@@ -38,7 +38,7 @@ npm i jest jest-runner-vscode --save-dev
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Extension Tests",
+      "name": "Jest: All tests",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
@@ -59,7 +59,7 @@ npm i jest jest-runner-vscode --save-dev
       }
     },
     {
-      "name": "Extension Tests (Current File)",
+      "name": "Jest: Current file",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
@@ -89,7 +89,7 @@ npm i jest jest-runner-vscode --save-dev
 The pattern Jest uses to detect test files.
 
 **`JEST_RUNNER_VSCODE_SETUP`**<br/>
-The path to a module that runs some code to configure or set up the testing framework before each test. You can use this to mock VS Code APIs, such as forcing the `getConfiguration` API to use an in-memory cache vs. interacting the file system.
+The path to a module that runs some code to configure or set up the testing framework before each test. You can use this to mock VS Code APIs, such as forcing the `getConfiguration` API to use an in-memory cache vs. interacting with the file system ([see shifty example](https://github.com/bmealhouse/vscode-shifty/blob/master/src/test-utils/jest-runner-vscode-setup.ts)).
 
 > **Example `launch.json`:**
 >
