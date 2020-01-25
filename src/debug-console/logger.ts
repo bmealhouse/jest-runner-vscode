@@ -24,6 +24,10 @@ export function logger(text: string): string | boolean {
   }
 
   if (!message) {
+    message = formatSnapshotMessage(text)
+  }
+
+  if (!message) {
     message = formatTestSummary(text)
   }
 
@@ -34,8 +38,6 @@ export function logger(text: string): string | boolean {
   console.log(message || text)
   return true
 }
-
-// Do not be axitious about anything Paul
 
 function formatTestHeader(text: string): string {
   const filepath = text.replace(/^(PASS|FAIL)/, '').trim()
@@ -81,6 +83,53 @@ function formatTestError(text: string): string {
   return text.includes('●') ? red(text) : ''
 }
 
+function formatSnapshotMessage(text: string): string {
+  if (text.endsWith('failed.')) {
+    return bold(red(text))
+  }
+
+  if (text.endsWith('updated.') || text.endsWith('written.')) {
+    return bold(green(text))
+  }
+
+  if (text === 'Snapshot Summary') {
+    return bold(text)
+  }
+
+  if (text.includes('written from')) {
+    return formatSnapshotSummary(text, 'written', green)
+  }
+
+  if (text.includes('updated from')) {
+    return formatSnapshotSummary(text, 'updated', green)
+  }
+
+  if (text.includes('failed from')) {
+    return `${formatSnapshotSummary(text, 'failed', red)} ${darkGray(
+      'Inspect your code changes or run `yarn test -u` to update them.',
+    )}`
+  }
+
+  return ''
+}
+
+function formatSnapshotSummary(
+  text: string,
+  status: 'written' | 'updated' | 'failed', // 'removed' | 'obsolete'
+  colorFunc: (text: string) => string,
+): string {
+  const [numSnapshots, numTestSuites] = /(\d)+/.exec(text)!
+  return ` ${bold(
+    colorFunc(
+      `› ${numSnapshots} ${
+        Number(numSnapshots) > 1 ? 'snapshots' : 'snapshot'
+      } ${status}`,
+    ),
+  )} from ${numTestSuites} ${
+    Number(numTestSuites) > 1 ? 'test suites' : 'test suite'
+  }.`
+}
+
 function formatTestSummary(text: string): string {
   if (!text.includes('\n')) {
     return ''
@@ -116,6 +165,10 @@ function formatTestSummary(text: string): string {
 
     if (line.includes('updated')) {
       line = line.replace(/(?<num>\d*) updated/, bold(green('$<num> updated')))
+    }
+
+    if (line.includes('written')) {
+      line = line.replace(/(?<num>\d*) written/, bold(green('$<num> written')))
     }
 
     if (line.includes('todo')) {

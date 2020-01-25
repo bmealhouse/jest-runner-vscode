@@ -55,7 +55,8 @@ npm i jest jest-runner-vscode --save-dev
       "preLaunchTask": "npm: compile",
       "internalConsoleOptions": "openOnSessionStart",
       "env": {
-        "JEST_RUNNER_VSCODE_TEST_REGEX": ""
+        "JEST_RUNNER_VSCODE_TEST_REGEX": "",
+        "JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS": "false"
       }
     },
     {
@@ -76,7 +77,52 @@ npm i jest jest-runner-vscode --save-dev
       "preLaunchTask": "npm: compile",
       "internalConsoleOptions": "openOnSessionStart",
       "env": {
-        "JEST_RUNNER_VSCODE_TEST_REGEX": "${file}"
+        "JEST_RUNNER_VSCODE_TEST_REGEX": "${file}",
+        "JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS": "false"
+      }
+    },
+      {
+      "name": "Jest: Update all snapshots",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "stopOnEntry": false,
+      "sourceMaps": true,
+      "smartStep": true,
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/node_modules/jest-runner-vscode"
+      ],
+      "skipFiles": ["<node_internals>/**/*.js"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "npm: compile",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "JEST_RUNNER_VSCODE_TEST_REGEX": "",
+        "JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS": "true"
+      }
+    },
+    {
+      "name": "Jest: Update snapshots in current file",
+      "type": "extensionHost",
+      "request": "launch",
+      "runtimeExecutable": "${execPath}",
+      "stopOnEntry": false,
+      "sourceMaps": true,
+      "smartStep": true,
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/node_modules/jest-runner-vscode"
+      ],
+      "skipFiles": ["<node_internals>/**/*.js"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "npm: compile",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "JEST_RUNNER_VSCODE_TEST_REGEX": "${file}",
+        "JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS": "true"
       }
     }
   ]
@@ -85,13 +131,35 @@ npm i jest jest-runner-vscode --save-dev
 
 ## Environment variables
 
-**`JEST_RUNNER_VSCODE_TEST_REGEX`**<br/>
+### `JEST_RUNNER_VSCODE_TEST_REGEX`
+
 The pattern Jest uses to detect test files.
 
-**`JEST_RUNNER_VSCODE_SETUP`**<br/>
+> **Example `env` settings:**
+>
+> ```json
+> "env": {
+>   "JEST_RUNNER_VSCODE_TEST_REGEX": "${file}",
+> }
+> ```
+
+### `JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS`
+
+Use this to re-record every snapshot that fails during this test run. Can be used together with `JEST_RUNNER_VSCODE_TEST_REGEX` to re-record snapshots.
+
+> **Example `env` settings:**
+>
+> ```json
+> "env": {
+>   "JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS": "true",
+> }
+> ```
+
+### `JEST_RUNNER_VSCODE_SETUP`
+
 The path to a module that runs some code to configure or set up the testing framework before each test. You can use this to mock VS Code APIs, such as forcing the `getConfiguration` API to use an in-memory cache vs. interacting with the file system ([see shifty example](https://github.com/bmealhouse/vscode-shifty/blob/master/src/test-utils/jest-runner-vscode-setup.ts)).
 
-> **Example `launch.json`:**
+> **Example `env` settings:**
 >
 > ```json
 > "env": {

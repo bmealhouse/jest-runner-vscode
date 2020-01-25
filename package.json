@@ -120,7 +120,7 @@
     "jest": "^24.9.0"
   },
   "scripts": {
-    "mlink": "pika-pack && cp -R ./pkg/ ../shifty/node_modules/jest-runner-vscode",
+    "mlink": "pika-pack && cp -R ./pkg/ ../vscode-shifty/node_modules/jest-runner-vscode",
     "release": "pika-pack && npm publish ./pkg",
     "test": "jest"
   }

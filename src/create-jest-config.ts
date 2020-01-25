@@ -14,6 +14,7 @@ export default (rootDir: string, pkgDir: string): object => ({
     process.env.JEST_RUNNER_VSCODE_SETUP || // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
       path.resolve(pkgDir, './dist-src/jest-runner-vscode-setup.js'),
   ],
+  updateSnapshot: process.env.JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS === 'true',
   globals: JSON.stringify({
     'ts-jest': {
       tsConfig: path.resolve(rootDir, './tsconfig.json'),
