@@ -84,12 +84,20 @@ function formatTestError(text: string): string {
 }
 
 function formatSnapshotMessage(text: string): string {
-  if (text.endsWith('failed.')) {
-    return bold(red(text))
+  if (
+    text.endsWith('updated.') ||
+    text.endsWith('written.') ||
+    text.endsWith('removed.')
+  ) {
+    return bold(green(text))
   }
 
-  if (text.endsWith('updated.') || text.endsWith('written.')) {
-    return bold(green(text))
+  if (text.endsWith('obsolete.')) {
+    return bold(yellow(text))
+  }
+
+  if (text.endsWith('failed.')) {
+    return bold(red(text))
   }
 
   if (text === 'Snapshot Summary') {
@@ -104,9 +112,40 @@ function formatSnapshotMessage(text: string): string {
     return formatSnapshotSummary(text, 'updated', green)
   }
 
+  if (text.includes('removed from')) {
+    // Use custom messaging for removed snapshot files
+    if (text.includes('file')) {
+      const [numSnapshots, numTestSuites] = /(\d)+/.exec(text)!
+      return ` ${bold(
+        green(
+          `› ${numSnapshots} snapshot ${
+            Number(numSnapshots) > 1 ? 'files' : 'file'
+          } removed`,
+        ),
+      )} from ${numTestSuites} ${
+        Number(numTestSuites) > 1 ? 'test suites' : 'test suite'
+      }.`
+    }
+
+    return formatSnapshotSummary(text, 'removed', green)
+  }
+
+  if (text.includes('obsolete from')) {
+    return `${formatSnapshotSummary(text, 'obsolete', yellow)} ${darkGray(
+      'To remove them all, re-run jest with `JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS=true`.',
+    )}`
+  }
+
+  if (text.includes('↳')) {
+    const filepath = text.replace(/↳/, '').trim()
+    const [testFilename, ...testPathParts] = filepath.split('/').reverse()
+    const testPath = testPathParts.reverse().join('/')
+    return `   ↳ ${darkGray(`${testPath}/`)}${bold(testFilename)}`
+  }
+
   if (text.includes('failed from')) {
     return `${formatSnapshotSummary(text, 'failed', red)} ${darkGray(
-      'Inspect your code changes or run `yarn test -u` to update them.',
+      'Inspect your code changes or re-run jest with `JEST_RUNNER_VSCODE_UPDATE_SNAPSHOTS=true` to update them.',
     )}`
   }
 
@@ -115,7 +154,7 @@ function formatSnapshotMessage(text: string): string {
 
 function formatSnapshotSummary(
   text: string,
-  status: 'written' | 'updated' | 'failed', // 'removed' | 'obsolete'
+  status: 'written' | 'updated' | 'failed' | 'removed' | 'obsolete',
   colorFunc: (text: string) => string,
 ): string {
   const [numSnapshots, numTestSuites] = /(\d)+/.exec(text)!
@@ -160,27 +199,43 @@ function formatTestSummary(text: string): string {
     }
 
     if (line.includes('passed')) {
-      line = line.replace(/(?<num>\d*) passed/, bold(green('$<num> passed')))
+      line = line.replace(/(?<num>\d+) passed/, bold(green('$<num> passed')))
     }
 
     if (line.includes('updated')) {
-      line = line.replace(/(?<num>\d*) updated/, bold(green('$<num> updated')))
+      line = line.replace(/(?<num>\d+) updated/, bold(green('$<num> updated')))
     }
 
     if (line.includes('written')) {
-      line = line.replace(/(?<num>\d*) written/, bold(green('$<num> written')))
+      line = line.replace(/(?<num>\d+) written/, bold(green('$<num> written')))
+    }
+
+    if (line.includes('removed')) {
+      // Use custom messaging for removed snapshot files
+      line = line.replace(
+        /(?<num>\d+) (?<fileText>file|files) removed/,
+        bold(green('$<num> $<fileText> removed')),
+      )
+      line = line.replace(/(?<num>\d+) removed/, bold(green('$<num> removed')))
     }
 
     if (line.includes('todo')) {
-      line = line.replace(/(?<num>\d*) todo/, bold(purple('$<num> todo')))
+      line = line.replace(/(?<num>\d+) todo/, bold(purple('$<num> todo')))
     }
 
     if (line.includes('skipped')) {
-      line = line.replace(/(?<num>\d*) skipped/, bold(yellow('$<num> skipped')))
+      line = line.replace(/(?<num>\d+) skipped/, bold(yellow('$<num> skipped')))
+    }
+
+    if (line.includes('obsolete')) {
+      line = line.replace(
+        /(?<num>\d+) obsolete/,
+        bold(yellow('$<num> obsolete')),
+      )
     }
 
     if (line.includes('failed')) {
-      line = line.replace(/(?<num>\d*) failed/, bold(red('$<num> failed')))
+      line = line.replace(/(?<num>\d+) failed/, bold(red('$<num> failed')))
     }
 
     summary.push(line)
