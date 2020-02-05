@@ -95,6 +95,7 @@
     "@jest/core": "25.1.0",
     "@jest/test-result": "25.1.0",
     "jest-environment-vscode": "1.0.0",
+    "prettier": "1.19.1",
     "source-map-support": "0.5.16"
   },
   "devDependencies": {
