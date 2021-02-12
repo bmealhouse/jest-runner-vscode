@@ -3,9 +3,12 @@
 [![npm version](https://img.shields.io/npm/v/jest-runner-vscode.svg)](https://npmjs.org/package/jest-runner-vscode)
 [![npm downloads](https://img.shields.io/npm/dm/jest-runner-vscode.svg)](https://npmjs.org/package/jest-runner-vscode)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![build status](https://travis-ci.com/bmealhouse/jest-runner-vscode.svg?branch=master)](https://travis-ci.com/bmealhouse/jest-runner-vscode)
 
 > Run VS Code tests using Jest Testing Framework
+
+## This project has moved
+
+`jest-runner-vscode` has moved to [vscode-jest-test-runner](https://github.com/bmealhouse/vscode-jest-test-runner).
 
 ## Table of contents
 
